@@ -2,11 +2,37 @@
   "company": {
     "name": "SMEC Automation Pvt Ltd",
     "description": "Multinational marine & industrial automation company, ISO-certified, operating since 2001. Provides automation-based products and installations for marine, oil & gas, defence, industrial, training, and IT sectors.",
-    "segments": ["Marine", "Oil and Gas", "Defence", "Industries", "Training, Research & Development (SMEClabs)", "Information Technology"],
+    "segments": [
+      "Marine",
+      "Oil and Gas",
+      "Defence",
+      "Industries",
+      "Training, Research & Development (SMEClabs)",
+      "Information Technology"
+    ],
     "locations": {
-      "india_branches": ["Mumbai", "Cochin", "Chennai", "Vishakhapatnam", "Mangalore"],
-      "international": ["Sharjah, UAE (large task force)", "Paris office"],
-      "countries_served": ["India", "UAE", "Qatar", "Egypt", "Kuwait", "Bahrain", "Singapore", "China", "Sri Lanka"]
+      "india_branches": [
+        "Mumbai",
+        "Cochin",
+        "Chennai",
+        "Vishakhapatnam",
+        "Mangalore"
+      ],
+      "international": [
+        "Sharjah, UAE (large task force)",
+        "Paris office"
+      ],
+      "countries_served": [
+        "India",
+        "UAE",
+        "Qatar",
+        "Egypt",
+        "Kuwait",
+        "Bahrain",
+        "Singapore",
+        "China",
+        "Sri Lanka"
+      ]
     },
     "contact": {
       "email_general": "support@smec.in",
@@ -14,8 +40,21 @@
       "phone": "+91 70453 55414",
       "address": "2nd Floor, Kaloor Complex, Cochin (also B-3, Aristocart, Lajya Estate, Andheri East, Mumbai)"
     },
-    "notable_clients": ["Indian Navy", "ONGC", "Cochin Shipyard", "Vizhinjam Port"],
-    "partners": ["Honeywell", "Schneider Electric", "Bosch Rexroth", "HIK-Vision", "Phoenix Contact", "Roxtec", "Aventics"]
+    "notable_clients": [
+      "Indian Navy",
+      "ONGC",
+      "Cochin Shipyard",
+      "Vizhinjam Port"
+    ],
+    "partners": [
+      "Honeywell",
+      "Schneider Electric",
+      "Bosch Rexroth",
+      "HIK-Vision",
+      "Phoenix Contact",
+      "Roxtec",
+      "Aventics"
+    ]
   },
   "products": [
     {
@@ -75,7 +114,7 @@
         "number_of_battery_outlets": 1,
         "battery_capacity_range": "200-1000 Ah",
         "nominal_input_voltage": "115/230 V AC, 50/60 Hz",
-        "input_voltage_range": "±10%",
+        "input_voltage_range": "\u00b110%",
         "power_supply_mode": "Yes",
         "display_readout": "LED display",
         "galvanic_isolation": "Yes",
@@ -95,7 +134,13 @@
         "ambient_temperature_range": "0-55 deg C",
         "cooling": "Forced Air Cooling",
         "protection_degree": "IP 23",
-        "protections": ["Over Voltage", "Over current", "Overload", "Over temperature", "Short Circuit"]
+        "protections": [
+          "Over Voltage",
+          "Over current",
+          "Overload",
+          "Over temperature",
+          "Short Circuit"
+        ]
       },
       "notes": "This is the most fully-specified product in the current knowledge base -- safe to quote these numbers exactly as given. Do not round or convert units unless the customer asks."
     },
@@ -122,6 +167,250 @@
       ],
       "specs": null,
       "notes": "General capability description only, no numeric specs. Good candidate for follow-up questions ('what protocol does remote monitoring use', 'what panel sizes') to be escalated."
+    },
+    {
+      "id": "navigation-light-control-panel",
+      "name": "Navigation Light Control Panel (NLCP)",
+      "category": "Marine",
+      "description": "One-of-a-kind system fitted on vessels to control and monitor navigation and signal lights with failure detection, dual power supply auto-changeover, and alarm indication.",
+      "features": [
+        "Controls and monitors navigation & signal lights",
+        "Automatic main & emergency supply changeover",
+        "Lamp failure alarm (visual & audible)",
+        "Dimming control for night operation",
+        "Modular design for easy expansion"
+      ],
+      "specs": {
+        "operating_voltage": "24V DC / 230V AC",
+        "protection": "IP 44 / IP 56"
+      }
+    },
+    {
+      "id": "lub-oil-temp-control-monitoring-system",
+      "name": "Lub Oil Temp Control & Monitoring System",
+      "category": "Marine / Industrial",
+      "description": "Advanced PLC-based control and monitoring system working on PID principles to accurately control lube oil temperatures for main engines and auxiliary machinery.",
+      "features": [
+        "PID function based closed-loop temperature control",
+        "High/low temperature alarms",
+        "3-way motorized valve control interface",
+        "Local display screen and remote telemetry output"
+      ],
+      "specs": null
+    },
+    {
+      "id": "indigenised-temperature-sensors-rtd",
+      "name": "Indigenised Temperature Sensors (RTDs)",
+      "category": "Defence / Marine",
+      "description": "Designed and developed temperature detectors (Pt100 RTDs) specifically engineered to replace legacy Russian-make sensors on naval vessels and submarines.",
+      "features": [
+        "Direct replacement for Russian naval temperature sensors",
+        "High vibration & shock resistance",
+        "Custom probe length and thread fitting",
+        "Class certified for defence applications"
+      ],
+      "specs": null
+    },
+    {
+      "id": "power-supply-module-24v-100a",
+      "name": "Power Supply Module (24V 100A)",
+      "category": "Marine / Industrial",
+      "description": "High precision regulated 24V, 100A DC power supply module designed for severe marine environments and critical automation loads.",
+      "features": [
+        "24V DC regulated output up to 100A",
+        "Short circuit, overvoltage & thermal overload protection",
+        "High efficiency SMPS architecture",
+        "Rugged enclosure suitable for Engine Room installation"
+      ],
+      "specs": {
+        "output_voltage": "24V DC",
+        "output_current": "100A Max"
+      }
+    },
+    {
+      "id": "mooring-winch-control-system",
+      "name": "Mooring Winch Control System",
+      "category": "Marine",
+      "description": "Control system for electro-hydraulic or electric mooring winches on commercial and naval vessels.",
+      "features": [
+        "Remote and local joystick operation",
+        "Tension monitoring and auto-tensioning control",
+        "Overload trip protection and emergency stop",
+        "Interlocked brake control"
+      ],
+      "specs": null
+    },
+    {
+      "id": "bearing-wear-monitoring-system",
+      "name": "Bearing Wear Monitoring System",
+      "category": "Marine",
+      "description": "Continuous online monitoring system for two-stroke and four-stroke engine main bearings, crosshead bearings, and crankcase wear detection.",
+      "features": [
+        "Early warning before catastrophic bearing failure",
+        "Distance sensor measurements for crankcase wear",
+        "Integration with Main Engine Alarm Monitoring System"
+      ],
+      "specs": null
+    },
+    {
+      "id": "alarm-signal-light-column",
+      "name": "Alarm Signal Light Column",
+      "category": "Marine",
+      "description": "Marine-grade visual and audible alarm column for Engine Rooms, machinery spaces, and noisy areas.",
+      "features": [
+        "High-intensity LED strobe indicators (red, amber, green, blue)",
+        "High-decibel electronic siren",
+        "Symbol indicators for CO2 release, Fire, General Alarm, Engine Call",
+        "24V DC operating voltage"
+      ],
+      "specs": null
+    },
+    {
+      "id": "power-management-system",
+      "name": "Power Management System (PMS)",
+      "category": "Marine / Industrial",
+      "description": "Comprehensive generator load sharing, auto-synchronizing, black-out prevention, and heavy consumer interlock system.",
+      "features": [
+        "Automatic gen-set start, stop, and load sharing",
+        "Auto-synchronizing and bus-tie control",
+        "Black-out recovery & preference trip load shedding",
+        "Heavy consumer start permission interlock"
+      ],
+      "specs": null
+    },
+    {
+      "id": "bwts-integration-vrcs",
+      "name": "BWTS Integration Systems & VRCS Additional Valves",
+      "category": "Marine",
+      "description": "Ballast Water Treatment System (BWTS) integration controls and Valve Remote Control System (VRCS) expansions.",
+      "features": [
+        "Integration with existing shipboard PLC networks",
+        "Hydraulic & pneumatic valve actuator interface",
+        "Compliance with IMO ballast water management conventions"
+      ],
+      "specs": null
+    },
+    {
+      "id": "cargo-tank-overfill-alarm",
+      "name": "Cargo Tank Overfill Alarm (95% & 98%)",
+      "category": "Marine",
+      "description": "Independent high level (95%) and overfill level (98%) alarm system for oil tankers, chemical carriers, and gas carriers.",
+      "features": [
+        "Dual level magnetic float or intrinsically safe sensors",
+        "Independent alarm panel on cargo control room (CCR)",
+        "Audible & visual alarm horns on deck",
+        "Intrinsically safe (Ex-d / Ex-ia) design"
+      ],
+      "specs": null
+    },
+    {
+      "id": "water-ingress-detection-system",
+      "name": "Water Ingress Detection System",
+      "category": "Marine",
+      "description": "SOLAS-compliant water level detection system for cargo holds, bow spaces, and ballast tanks on bulk carriers and cargo ships.",
+      "features": [
+        "Pre-alarm (0.5m) and Main alarm (2.0m) water level detection",
+        "Intrinsically safe sensors for hazardous locations",
+        "Main Bridge control panel with battery backup"
+      ],
+      "specs": null
+    },
+    {
+      "id": "fixed-pump-room-gas-detection-system",
+      "name": "Fixed Pump Room Gas Detection System",
+      "category": "Marine",
+      "description": "Continuous combustible gas (hydrocarbons) and toxic gas monitoring system for tanker cargo pump rooms.",
+      "features": [
+        "Sampling line aspiration system or fixed Ex-proof sensors",
+        "LEL (Lower Explosive Limit) alarm triggers",
+        "Automatic ventilation fan interlock and trip"
+      ],
+      "specs": null
+    },
+    {
+      "id": "alarm-monitoring-control-system-amcs",
+      "name": "Alarm Monitoring & Control System (AMCS)",
+      "category": "Marine",
+      "description": "Integrated shipboard alarm monitoring system (AMS) for engine parameters, tank levels, electrical power, and alarms.",
+      "features": [
+        "Touchscreen HMI workstations for Bridge and Engine Control Room (ECR)",
+        "Redundant Ethernet communication network",
+        "Data logging, trend analysis, and report generation",
+        "Distributed I/O modules for easy cabling"
+      ],
+      "specs": null
+    },
+    {
+      "id": "bow-thruster-control-system",
+      "name": "Bow Thruster Control & Safety System",
+      "category": "Marine",
+      "description": "Joystick and helm station control system for bow and stern thrusters with motor overload and hydraulic interlocks.",
+      "features": [
+        "Multi-station control (Bridge, Port Wing, Starboard Wing)",
+        "Motor load feedback and proportional control",
+        "Emergency trip and hydraulic pressure monitoring"
+      ],
+      "specs": null
+    },
+    {
+      "id": "vapour-emission-control-system-vecs",
+      "name": "Vapour Emission Control System (VECS)",
+      "category": "Marine",
+      "description": "Monitors vapor line pressure, hydrocarbon concentration, and oxygen content during cargo loading operations on tankers.",
+      "features": [
+        "High/low pressure alarms for vapor manifold",
+        "Oxygen analyzer integration",
+        "USCG and IMO compliance"
+      ],
+      "specs": null
+    },
+    {
+      "id": "optical-torsion-monitoring-system",
+      "name": "Optical Torsion Monitoring System",
+      "category": "Marine",
+      "description": "Non-contact shaft power, torque, and RPM measurement system for main propulsion shafting.",
+      "features": [
+        "Optical sensor measurement of shaft twist under load",
+        "Real-time power (kW), torque (kNm), and RPM calculation",
+        "Fuel efficiency optimization and engine load monitoring"
+      ],
+      "specs": null
+    },
+    {
+      "id": "helicopter-deck-lighting-control-system",
+      "name": "Helicopter Deck Lighting & Control System",
+      "category": "Marine / Offshore",
+      "description": "Helideck perimeter lights, status lights, floodlights, and touch-panel control system for offshore platforms and naval vessels.",
+      "features": [
+        "Green perimeter lights, wave-off lights, and illuminated windsock control",
+        "NVG (Night Vision Goggle) compatible lighting options",
+        "CAP 437 compliant helideck lighting controls"
+      ],
+      "specs": null
+    },
+    {
+      "id": "electrical-starter-panels",
+      "name": "Electrical Starter Panels",
+      "category": "Marine / Industrial",
+      "description": "Custom marine-grade starter panels including Direct-On-Line (DOL), Star-Delta, Soft Starter, and VFD panels for pumps, fans, and compressors.",
+      "features": [
+        "Heavy duty marine contactors and thermal overload relays",
+        "Local/Remote selector switches and running indication lamps",
+        "IP 54 / IP 56 enclosure protection options"
+      ],
+      "specs": null
+    },
+    {
+      "id": "data-acquisition-display-system",
+      "name": "Data Acquisition & Display System",
+      "category": "Marine / Industrial",
+      "description": "SMEC designed user-friendly data logging, touchscreen HMI displays, and telemetry systems.",
+      "features": [
+        "High resolution touch display screens",
+        "Modbus RTU / Modbus TCP / CANbus protocol support",
+        "Historical data logging and USB/SD card export"
+      ],
+      "specs": null
     }
   ]
 }
