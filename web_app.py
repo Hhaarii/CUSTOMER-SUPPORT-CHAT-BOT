@@ -112,16 +112,17 @@ def api_chat():
     if user_message:
         full_messages.append({"role": "user", "content": user_message})
 
-    engine = get_active_engine()
-    provider = engine["provider"]
-    model_name = requested_model or engine["model"]
-
-    # Handle explicit provider switching via model prefix
+    # Determine requested provider & model
     if requested_model.startswith("ollama:"):
         provider = "ollama"
         model_name = requested_model.split(":", 1)[1]
-    elif requested_model and provider == "groq":
+    elif requested_model:
+        provider = "groq"
         model_name = requested_model
+    else:
+        engine = get_active_engine()
+        provider = engine["provider"]
+        model_name = engine["model"]
 
     if provider == "none":
         return jsonify({
@@ -132,42 +133,61 @@ def api_chat():
     used_model = model_name
 
     if provider == "groq":
-        client = engine["client"]
-        try:
-            response = client.chat.completions.create(
-                model=model_name,
-                messages=full_messages,
-                temperature=0.3,
-                max_tokens=600,
-            )
-            reply = response.choices[0].message.content
-        except Exception as e:
-            # Fallback across candidate models
-            for alt in FREE_GROQ_MODELS:
-                if alt == model_name:
-                    continue
-                try:
-                    response = client.chat.completions.create(
-                        model=alt,
-                        messages=full_messages,
-                        temperature=0.3,
-                        max_tokens=600,
-                    )
-                    reply = response.choices[0].message.content
-                    used_model = alt
-                    break
-                except Exception:
-                    continue
-
-            # Fallback to Ollama if Groq failed
+        groq_key = os.environ.get("GROQ_API_KEY")
+        if not groq_key:
+            # Fallback to local Ollama if Groq key is missing
             ollama_model = os.environ.get("OLLAMA_MODEL", "llama3.2")
-            if not reply and check_ollama_alive(ollama_model):
+            if check_ollama_alive(ollama_model):
                 try:
                     reply = call_ollama(full_messages, ollama_model)
                     provider = "ollama"
                     used_model = ollama_model
-                except Exception:
-                    pass
+                except Exception as e:
+                    return jsonify({
+                        "error": f"GROQ_API_KEY is not set for Groq model '{model_name}', and local Ollama fallback failed."
+                    }), 400
+            else:
+                return jsonify({
+                    "error": f"GROQ_API_KEY is missing for cloud model '{model_name}'. Please export GROQ_API_KEY or switch to Local (Ollama) in the dropdown."
+                }), 400
+        else:
+            try:
+                from groq import Groq
+                client = Groq(api_key=groq_key)
+                response = client.chat.completions.create(
+                    model=model_name,
+                    messages=full_messages,
+                    temperature=0.3,
+                    max_tokens=600,
+                )
+                reply = response.choices[0].message.content
+            except Exception as e:
+                # Fallback across candidate Groq models
+                for alt in FREE_GROQ_MODELS:
+                    if alt == model_name:
+                        continue
+                    try:
+                        response = client.chat.completions.create(
+                            model=alt,
+                            messages=full_messages,
+                            temperature=0.3,
+                            max_tokens=600,
+                        )
+                        reply = response.choices[0].message.content
+                        used_model = alt
+                        break
+                    except Exception:
+                        continue
+
+                # Fallback to Ollama if all Groq models failed
+                ollama_model = os.environ.get("OLLAMA_MODEL", "llama3.2")
+                if not reply and check_ollama_alive(ollama_model):
+                    try:
+                        reply = call_ollama(full_messages, ollama_model)
+                        provider = "ollama"
+                        used_model = ollama_model
+                    except Exception:
+                        pass
 
     elif provider == "ollama":
         try:
@@ -200,7 +220,7 @@ def api_chat():
         })
     else:
         return jsonify({
-            "error": "Failed to generate response. Please check your network connection or API key."
+            "error": "Failed to generate response. Please check your GROQ_API_KEY or local Ollama server status."
         }), 500
 
 
