@@ -1,0 +1,127 @@
+{
+  "company": {
+    "name": "SMEC Automation Pvt Ltd",
+    "description": "Multinational marine & industrial automation company, ISO-certified, operating since 2001. Provides automation-based products and installations for marine, oil & gas, defence, industrial, training, and IT sectors.",
+    "segments": ["Marine", "Oil and Gas", "Defence", "Industries", "Training, Research & Development (SMEClabs)", "Information Technology"],
+    "locations": {
+      "india_branches": ["Mumbai", "Cochin", "Chennai", "Vishakhapatnam", "Mangalore"],
+      "international": ["Sharjah, UAE (large task force)", "Paris office"],
+      "countries_served": ["India", "UAE", "Qatar", "Egypt", "Kuwait", "Bahrain", "Singapore", "China", "Sri Lanka"]
+    },
+    "contact": {
+      "email_general": "support@smec.in",
+      "email_sales": "sanuj@smec.in",
+      "phone": "+91 70453 55414",
+      "address": "2nd Floor, Kaloor Complex, Cochin (also B-3, Aristocart, Lajya Estate, Andheri East, Mumbai)"
+    },
+    "notable_clients": ["Indian Navy", "ONGC", "Cochin Shipyard", "Vizhinjam Port"],
+    "partners": ["Honeywell", "Schneider Electric", "Bosch Rexroth", "HIK-Vision", "Phoenix Contact", "Roxtec", "Aventics"]
+  },
+  "products": [
+    {
+      "id": "salinity-monitoring-system",
+      "name": "Salinity Monitoring System",
+      "category": "Marine",
+      "description": "Specially designed for distillation plant operation on board ships. Senses the salinity content present in water in PPT (Parts Per Trillion) for high-precision measurement.",
+      "sub_note": "The SMEC-designed distillation plant dumping valve control system is powered by this advanced salinity indicator.",
+      "features": [
+        "Main control panel with salinity indicator",
+        "Remote indicator panel",
+        "Controls the operation of the dumping valve as per set point",
+        "Alarm indication for high salinity presence"
+      ],
+      "specs": null,
+      "notes": "No detailed technical spec table available yet -- only feature list. Do not invent numeric values (e.g. measurement range, accuracy) if a customer asks; escalate instead."
+    },
+    {
+      "id": "generator-controllers",
+      "name": "Generator Controllers",
+      "category": "Marine / Industrial",
+      "description": "Provide comprehensive generator protection and control for single or multiple gen-sets based on field-proven technologies. Primary function is to manage and protect the generator (as distinct from the engine).",
+      "use_cases": [
+        "Applications where engine management or protection is not required",
+        "Cases where the generator is powered by another source, such as a turbine controlled by an external PLC"
+      ],
+      "applicability": "Suitable for use in both Land-Based and Marine applications.",
+      "specs": null,
+      "notes": "No detailed spec table available. Escalate for exact model numbers, protection thresholds, or electrical ratings."
+    },
+    {
+      "id": "engine-order-telegraph-system",
+      "name": "Engine Order Telegraph Systems",
+      "category": "Marine",
+      "description": "Main engine control system behavior is first carefully observed to locate a problem, then the fault is identified and rectified. System consists of electro-mechanical and digital controls for start, stop, speed control, shut down, slow-down, safety, and alarm systems -- repaired and tested as part of SMEC's service offering.",
+      "features": [
+        "24V DC supply",
+        "Electronic based circuit",
+        "LED lamp indication",
+        "Two wire communication from bridge device to ER (Engine Room) device",
+        "Compact design",
+        "Easy installation"
+      ],
+      "specs": {
+        "supply_voltage": "24V DC"
+      },
+      "notes": "Only supply voltage is a confirmed spec; other technical details (response time, indication states, etc.) are not documented here."
+    },
+    {
+      "id": "battery-charger",
+      "name": "Battery Charger (24V DC Marine/Industrial)",
+      "category": "Marine / Industrial",
+      "description": "Specifically designed for marine environments to support emergency power requirements and general control supply needs. Full-automatic, high-efficiency battery charger/rectifier. Can also be used as a rectifier to provide rated supply directly to connected consumers. Secured against short circuit, overload, and high temperatures.",
+      "general_specifications": {
+        "nominal_output_voltage": "24 V DC",
+        "total_charge_current": "100 A",
+        "number_of_battery_outlets": 1,
+        "battery_capacity_range": "200-1000 Ah",
+        "nominal_input_voltage": "115/230 V AC, 50/60 Hz",
+        "input_voltage_range": "±10%",
+        "power_supply_mode": "Yes",
+        "display_readout": "LED display",
+        "galvanic_isolation": "Yes",
+        "dimensions_mm": "328 x 415 x 143",
+        "weight_kg": 8.65
+      },
+      "technical_specifications": {
+        "charge_characteristic": "3 Stage Charger",
+        "charge_current_bulk": "0-100A (Adjustable)",
+        "charge_voltage_absorption": "28.5 V",
+        "absorption_time_hours": "1-2",
+        "charge_voltage_float": "26.5 V",
+        "temperature_sensor": "Optional (as per customer requirement)",
+        "dc_voltage_compensation_adjustable": "0.3 V (Cable compensation)",
+        "full_load_consumption": "3 KW Max",
+        "current_control_function": "Yes, Adjustable",
+        "ambient_temperature_range": "0-55 deg C",
+        "cooling": "Forced Air Cooling",
+        "protection_degree": "IP 23",
+        "protections": ["Over Voltage", "Over current", "Overload", "Over temperature", "Short Circuit"]
+      },
+      "notes": "This is the most fully-specified product in the current knowledge base -- safe to quote these numbers exactly as given. Do not round or convert units unless the customer asks."
+    },
+    {
+      "id": "control-monitoring-panels",
+      "name": "Control & Monitoring Panels",
+      "category": "Marine / Industrial / Instrumentation",
+      "description": "SMEC has designed and supplied various control and monitoring panels for electrical, engineering, and instrumentation departments across customers including Indian Navy, ONGC, etc. Supplied as an optimised solution to match an existing system, either as a part or as a whole customised solution.",
+      "types": [
+        "Retrofit solutions",
+        "Customised solutions",
+        "New builds catering to the entire scope of controls"
+      ],
+      "features": [
+        "Centralised Control",
+        "Remote Monitoring Options",
+        "Highly accurate instrumentation",
+        "User friendly systems",
+        "Minimal maintenance",
+        "Marine compliant",
+        "Automated and Manual control options",
+        "Alarm monitoring and log generation",
+        "Trend analysis"
+      ],
+      "specs": null,
+      "notes": "General capability description only, no numeric specs. Good candidate for follow-up questions ('what protocol does remote monitoring use', 'what panel sizes') to be escalated."
+    }
+  ]
+}
