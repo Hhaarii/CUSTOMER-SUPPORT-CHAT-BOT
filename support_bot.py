@@ -36,14 +36,12 @@ GROK_MODELS = [
 ]
 
 FREE_GROQ_MODELS = [
+    "qwen/qwen3.8-27b",
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "allam-2-7b",
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "llama3-70b-8192",
-    "llama3-8b-8192",
-    "gemma2-9b-it",
-    "deepseek-r1-distill-llama-70b",
-    "qwen-2.5-32b",
-    "mixtral-8x7b-32768",
 ]
 
 DEFAULT_MODEL = os.environ.get("GROQ_MODEL") or os.environ.get("GROK_MODEL")
@@ -95,15 +93,15 @@ def get_working_groq_model(client, preferred: str = None) -> str:
             if cand.lower() in available_map:
                 return available_map[cand.lower()]
                 
-        # Fallback to standard (non-partner) models
+        # Fallback to standard active chat models
         for m in models_data:
             mid = m.id.lower()
-            if not any(kw in mid for kw in NON_CHAT_KEYWORDS) and "/" not in m.id:
+            if not any(kw in mid for kw in NON_CHAT_KEYWORDS):
                 return m.id
     except Exception:
         pass
 
-    return preferred or "llama-3.3-70b-versatile"
+    return preferred or "qwen/qwen3.8-27b"
 
 
 def check_ollama_alive(model_name: str = "llama3.2") -> bool:
