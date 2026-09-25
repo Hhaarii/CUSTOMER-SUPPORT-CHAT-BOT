@@ -547,33 +547,52 @@
 
     const modelSelect = document.getElementById('modelSelect');
 
-    function syncSidebarCard(provider, model) {
-      if (provider === 'groq') {
-        engineName.textContent = 'Online (Groq Cloud)';
-        engineModel.textContent = `Model: ${model}`;
-      } else if (provider === 'ollama') {
+    function syncSidebarCard(provider, model, optionText) {
+      let label = optionText || model || 'Auto-Select';
+      if (label.includes(': ')) {
+        label = label.split(': ')[1];
+      }
+
+      const statusDot = document.getElementById('statusDot');
+
+      if (provider === 'ollama' || (model && model.startsWith('ollama:'))) {
         engineName.textContent = 'Local (Ollama)';
-        engineModel.textContent = `Model: ${model}`;
-      } else if (model && model.startsWith('ollama:')) {
-        engineName.textContent = 'Local (Ollama)';
-        engineModel.textContent = `Model: ${model.split(':')[1]}`;
-      } else if (model) {
+        engineModel.textContent = `Model: ${label.replace('ollama:', '')}`;
+        if (statusDot) {
+          statusDot.style.background = '#3b82f6';
+          statusDot.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.6)';
+        }
+      } else if (provider === 'groq' || (model && model !== '')) {
         engineName.textContent = 'Online (Groq Cloud)';
-        engineModel.textContent = `Model: ${model}`;
+        engineModel.textContent = `Model: ${label}`;
+        if (statusDot) {
+          statusDot.style.background = '#10b981';
+          statusDot.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.6)';
+        }
+      } else {
+        engineName.textContent = 'Auto Engine';
+        engineModel.textContent = 'Selecting optimal model...';
+        if (statusDot) {
+          statusDot.style.background = '#f59e0b';
+          statusDot.style.boxShadow = '0 0 10px rgba(245, 158, 11, 0.6)';
+        }
       }
     }
 
     // Sync sidebar card immediately when dropdown changes
     if (modelSelect) {
-      ['change', 'input', 'click'].forEach(evt => {
-        modelSelect.addEventListener(evt, () => {
-          const val = modelSelect.value;
-          if (val) {
-            syncSidebarCard(val.startsWith('ollama:') ? 'ollama' : 'groq', val.replace('ollama:', ''));
-          } else {
-            loadInfo();
-          }
-        });
+      modelSelect.addEventListener('change', () => {
+        const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+        const val = modelSelect.value;
+        const text = selectedOption ? selectedOption.text : '';
+
+        if (val) {
+          const isOllama = val.startsWith('ollama:');
+          syncSidebarCard(isOllama ? 'ollama' : 'groq', val, text);
+        } else {
+          syncSidebarCard('auto', '', 'Auto-Select');
+          loadInfo();
+        }
       });
     }
 
@@ -583,16 +602,24 @@
         const res = await fetch('/api/kb');
         const data = await res.json();
         
-        // Update Engine Status
+        // Update Engine Status if no explicit user selection
         if (data.engine) {
-          syncSidebarCard(data.engine.provider, data.engine.model);
-
-          if (modelSelect && !modelSelect.value && data.engine.model) {
-            if (data.engine.provider === 'ollama') {
-              modelSelect.value = `ollama:${data.engine.model}`;
-            } else if (data.engine.provider === 'groq') {
-              modelSelect.value = data.engine.model;
+          if (modelSelect && !modelSelect.value) {
+            syncSidebarCard(data.engine.provider, data.engine.model);
+            if (data.engine.model) {
+              const targetVal = data.engine.provider === 'ollama' ? `ollama:${data.engine.model}` : data.engine.model;
+              modelSelect.value = targetVal;
+              // Sync with option label
+              const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+              if (selectedOption) {
+                syncSidebarCard(data.engine.provider, data.engine.model, selectedOption.text);
+              }
             }
+          } else if (modelSelect && modelSelect.value) {
+            const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+            const val = modelSelect.value;
+            const text = selectedOption ? selectedOption.text : '';
+            syncSidebarCard(val.startsWith('ollama:') ? 'ollama' : 'groq', val, text);
           }
         }
 
