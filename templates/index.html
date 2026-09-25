@@ -545,6 +545,24 @@
 
     let chatHistory = [];
 
+    const modelSelect = document.getElementById('modelSelect');
+
+    // Sync sidebar card when dropdown selection changes
+    if (modelSelect) {
+      modelSelect.addEventListener('change', () => {
+        const val = modelSelect.value;
+        if (val.startsWith('ollama:')) {
+          engineName.textContent = 'Local (Ollama)';
+          engineModel.textContent = `Model: ${val.split(':')[1]}`;
+        } else if (val) {
+          engineName.textContent = 'Online (Groq Cloud)';
+          engineModel.textContent = `Model: ${val}`;
+        } else {
+          loadInfo();
+        }
+      });
+    }
+
     // Load Knowledge Base Info and Engine Status
     async function loadInfo() {
       try {
@@ -555,6 +573,14 @@
         if (data.engine) {
           engineName.textContent = data.engine.status || 'Active';
           engineModel.textContent = data.engine.model ? `Model: ${data.engine.model}` : 'Ready';
+
+          if (modelSelect && !modelSelect.value && data.engine.model) {
+            if (data.engine.provider === 'ollama') {
+              modelSelect.value = `ollama:${data.engine.model}`;
+            } else if (data.engine.provider === 'groq') {
+              modelSelect.value = data.engine.model;
+            }
+          }
         }
 
         // Populate Products List
