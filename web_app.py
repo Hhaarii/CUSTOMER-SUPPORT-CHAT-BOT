@@ -12,6 +12,10 @@ from threading import Timer
 
 from flask import Flask, render_template, request, jsonify
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Ensure parent directory is in path
 sys.path.insert(0, str(Path(__file__).parent))
 

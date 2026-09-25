@@ -23,6 +23,10 @@ import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 KB_PATH = Path(__file__).parent / "knowledge_base.json"
 
 FREE_GROQ_MODELS = [
