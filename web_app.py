@@ -25,7 +25,9 @@ from support_bot import (
     get_working_groq_model,
     check_ollama_alive,
     call_ollama,
+    call_grok,
     FREE_GROQ_MODELS,
+    GROK_MODELS,
 )
 
 app = Flask(__name__)
@@ -35,12 +37,21 @@ SYSTEM_PROMPT = build_system_prompt(KB)
 
 
 def get_active_engine():
+    grok_key = os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY")
     groq_api_key = os.environ.get("GROQ_API_KEY")
     force_ollama = os.environ.get("USE_OLLAMA", "").lower() in ("1", "true", "yes")
     ollama_model = os.environ.get("OLLAMA_MODEL", "llama3.2")
     default_model = os.environ.get("GROQ_MODEL")
 
     ollama_ready = check_ollama_alive(ollama_model)
+
+    if grok_key and not force_ollama:
+        return {
+            "provider": "grok",
+            "model": "grok-2-1212",
+            "client": None,
+            "status": "Online (xAI Grok)",
+        }
 
     if groq_api_key and not force_ollama:
         try:
@@ -53,7 +64,7 @@ def get_active_engine():
                 "client": client,
                 "status": "Online (Groq Cloud)",
             }
-        except Exception as e:
+        except Exception:
             pass
 
     if ollama_ready:
@@ -117,7 +128,10 @@ def api_chat():
         full_messages.append({"role": "user", "content": user_message})
 
     # Determine requested provider & model
-    if requested_model.startswith("ollama:"):
+    if requested_model.startswith("grok:"):
+        provider = "grok"
+        model_name = requested_model.split(":", 1)[1]
+    elif requested_model.startswith("ollama:"):
         provider = "ollama"
         model_name = requested_model.split(":", 1)[1]
     elif requested_model:
@@ -130,13 +144,47 @@ def api_chat():
 
     if provider == "none":
         return jsonify({
-            "error": "No LLM Engine ready. Please set GROQ_API_KEY environment variable or start local Ollama server."
+            "error": "No LLM Engine ready. Please set GROK_API_KEY / GROQ_API_KEY environment variable or start local Ollama server."
         }), 503
 
     reply = None
     used_model = model_name
 
-    if provider == "groq":
+    if provider == "grok":
+        grok_key = os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY")
+        if not grok_key:
+            # Fallback to local Ollama if Grok key is missing
+            ollama_model = os.environ.get("OLLAMA_MODEL", "llama3.2")
+            if check_ollama_alive(ollama_model):
+                try:
+                    reply = call_ollama(full_messages, ollama_model)
+                    provider = "ollama"
+                    used_model = ollama_model
+                except Exception as e:
+                    return jsonify({
+                        "error": f"GROK_API_KEY is missing for Grok model '{model_name}', and local Ollama fallback failed."
+                    }), 400
+            else:
+                return jsonify({
+                    "error": f"GROK_API_KEY or XAI_API_KEY is missing for xAI Grok model '{model_name}'. Please export GROK_API_KEY or switch to Local (Ollama)."
+                }), 400
+        else:
+            try:
+                reply = call_grok(full_messages, model_name, grok_key)
+            except Exception as e:
+                # Fallback to Ollama if Grok call failed
+                ollama_model = os.environ.get("OLLAMA_MODEL", "llama3.2")
+                if check_ollama_alive(ollama_model):
+                    try:
+                        reply = call_ollama(full_messages, ollama_model)
+                        provider = "ollama"
+                        used_model = ollama_model
+                    except Exception:
+                        pass
+                if not reply:
+                    return jsonify({"error": f"xAI Grok API call failed: {str(e)}"}), 500
+
+    elif provider == "groq":
         groq_key = os.environ.get("GROQ_API_KEY")
         if not groq_key:
             # Fallback to local Ollama if Groq key is missing

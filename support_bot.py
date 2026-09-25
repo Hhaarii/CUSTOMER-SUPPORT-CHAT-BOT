@@ -29,6 +29,12 @@ load_dotenv()
 
 KB_PATH = Path(__file__).parent / "knowledge_base.json"
 
+GROK_MODELS = [
+    "grok-2-1212",
+    "grok-beta",
+    "grok-2-vision-1212",
+]
+
 FREE_GROQ_MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
@@ -40,7 +46,34 @@ FREE_GROQ_MODELS = [
     "mixtral-8x7b-32768",
 ]
 
-DEFAULT_MODEL = os.environ.get("GROQ_MODEL")
+DEFAULT_MODEL = os.environ.get("GROQ_MODEL") or os.environ.get("GROK_MODEL")
+
+
+def call_grok(messages: list, model_name: str = "grok-2-1212", api_key: str = None) -> str:
+    """Call xAI Grok API endpoint with error handling."""
+    key = api_key or os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY")
+    if not key:
+        raise ValueError("GROK_API_KEY or XAI_API_KEY is missing from environment or .env file.")
+
+    import urllib.request
+
+    url = "https://api.xai.com/v1/chat/completions"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {key}",
+        "User-Agent": "SMECBot",
+    }
+    payload = {
+        "model": model_name,
+        "messages": messages,
+        "temperature": 0.3,
+        "max_tokens": 600,
+    }
+
+    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+        return data["choices"][0]["message"]["content"]
 
 
 def load_knowledge_base() -> dict:

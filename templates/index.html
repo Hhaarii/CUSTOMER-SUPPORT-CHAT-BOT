@@ -500,13 +500,21 @@
         <div style="display: flex; gap: 10px; align-items: center;">
           <select id="modelSelect" style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--panel-border); color: var(--text-main); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; outline: none; cursor: pointer;">
             <option value="">⚡ Auto-Select Best Model</option>
-            <option value="llama-3.3-70b-versatile">Groq: Llama 3.3 70B</option>
-            <option value="llama-3.1-8b-instant">Groq: Llama 3.1 8B</option>
-            <option value="gemma2-9b-it">Groq: Gemma 2 9B</option>
-            <option value="deepseek-r1-distill-llama-70b">Groq: DeepSeek R1 70B</option>
-            <option value="qwen-2.5-32b">Groq: Qwen 2.5 32B</option>
-            <option value="mixtral-8x7b-32768">Groq: Mixtral 8x7B</option>
-            <option value="ollama:llama3.2">Local: Ollama Llama 3.2</option>
+            <optgroup label="xAI Grok Models">
+              <option value="grok:grok-2-1212">Grok: Grok 2</option>
+              <option value="grok:grok-beta">Grok: Grok Beta</option>
+            </optgroup>
+            <optgroup label="Groq Cloud Models">
+              <option value="llama-3.3-70b-versatile">Groq: Llama 3.3 70B</option>
+              <option value="llama-3.1-8b-instant">Groq: Llama 3.1 8B</option>
+              <option value="gemma2-9b-it">Groq: Gemma 2 9B</option>
+              <option value="deepseek-r1-distill-llama-70b">Groq: DeepSeek R1 70B</option>
+              <option value="qwen-2.5-32b">Groq: Qwen 2.5 32B</option>
+              <option value="mixtral-8x7b-32768">Groq: Mixtral 8x7B</option>
+            </optgroup>
+            <optgroup label="Local Models">
+              <option value="ollama:llama3.2">Local: Ollama Llama 3.2</option>
+            </optgroup>
           </select>
           <button class="clear-btn" id="clearBtn"><i class="fa-solid fa-rotate-left"></i> Reset Chat</button>
         </div>
@@ -555,7 +563,14 @@
 
       const statusDot = document.getElementById('statusDot');
 
-      if (provider === 'ollama' || (model && model.startsWith('ollama:'))) {
+      if (provider === 'grok' || (model && model.startsWith('grok:'))) {
+        engineName.textContent = 'Online (xAI Grok)';
+        engineModel.textContent = `Model: ${label.replace('grok:', '')}`;
+        if (statusDot) {
+          statusDot.style.background = '#8b5cf6';
+          statusDot.style.boxShadow = '0 0 10px rgba(139, 92, 246, 0.6)';
+        }
+      } else if (provider === 'ollama' || (model && model.startsWith('ollama:'))) {
         engineName.textContent = 'Local (Ollama)';
         engineModel.textContent = `Model: ${label.replace('ollama:', '')}`;
         if (statusDot) {
@@ -587,8 +602,10 @@
         const text = selectedOption ? selectedOption.text : '';
 
         if (val) {
+          const isGrok = val.startsWith('grok:');
           const isOllama = val.startsWith('ollama:');
-          syncSidebarCard(isOllama ? 'ollama' : 'groq', val, text);
+          const provider = isGrok ? 'grok' : (isOllama ? 'ollama' : 'groq');
+          syncSidebarCard(provider, val, text);
         } else {
           syncSidebarCard('auto', '', 'Auto-Select');
           loadInfo();
