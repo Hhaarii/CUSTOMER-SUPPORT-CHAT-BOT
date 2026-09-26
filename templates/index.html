@@ -482,6 +482,14 @@
         </div>
       </div>
 
+      <!-- Indexed PDF Manuals Section -->
+      <div class="knowledge-section" style="margin-top: 15px;">
+        <h3 class="section-title"><i class="fa-solid fa-file-lines"></i> Indexed PDF Manuals</h3>
+        <div class="product-list" id="pdfList">
+          <div style="font-size: 0.8rem; color: var(--text-muted); padding: 5px;">No PDFs uploaded yet</div>
+        </div>
+      </div>
+
       <!-- Contact Info -->
       <div class="contact-card" id="contactCard">
         <div><i class="fa-solid fa-envelope"></i> <span id="supportEmail">support@smec.in</span></div>
@@ -495,9 +503,14 @@
       <header class="chat-header">
         <div class="header-info">
           <h2>Customer Support Assistant</h2>
-          <p>Grounded in SMEC Technical Knowledge Base</p>
+          <p>Grounded in SMEC Technical Knowledge Base & Indexed PDFs</p>
         </div>
         <div style="display: flex; gap: 10px; align-items: center;">
+          <label for="pdfUploadInput" class="clear-btn" style="cursor: pointer; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd;">
+            <i class="fa-solid fa-file-pdf"></i> Upload PDF
+          </label>
+          <input type="file" id="pdfUploadInput" accept=".pdf" style="display: none;">
+
           <select id="modelSelect" style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--panel-border); color: var(--text-main); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; outline: none; cursor: pointer;">
             <option value="">⚡ Auto-Select Best Model</option>
             <optgroup label="xAI Grok Models">
@@ -653,9 +666,63 @@
             productList.appendChild(chip);
           });
         }
+
+        // Populate PDF List
+        const pdfList = document.getElementById('pdfList');
+        if (pdfList) {
+          if (data.pdfs && data.pdfs.length > 0) {
+            pdfList.innerHTML = '';
+            data.pdfs.forEach(pdf => {
+              const chip = document.createElement('div');
+              chip.className = 'product-chip';
+              chip.style.borderColor = 'rgba(59, 130, 246, 0.4)';
+              chip.innerHTML = `<span style="font-size: 0.78rem;"><i class="fa-solid fa-file-pdf" style="color: #ef4444; margin-right: 5px;"></i>${pdf.filename}</span> <span style="font-size: 0.7rem; color: #93c5fd;">(${pdf.pages}p / ${pdf.lines}l)</span>`;
+              chip.onclick = () => {
+                userInput.value = `Can you point out the exact page and line number in ${pdf.filename} regarding `;
+                userInput.focus();
+              };
+              pdfList.appendChild(chip);
+            });
+          } else {
+            pdfList.innerHTML = '<div style="font-size: 0.8rem; color: var(--text-muted); padding: 5px;">No PDFs uploaded yet</div>';
+          }
+        }
       } catch (err) {
         console.error('Failed to load KB info:', err);
       }
+    }
+
+    // PDF Upload Handler
+    const pdfUploadInput = document.getElementById('pdfUploadInput');
+    if (pdfUploadInput) {
+      pdfUploadInput.addEventListener('change', async () => {
+        const file = pdfUploadInput.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('pdf_file', file);
+
+        showTypingIndicator();
+
+        try {
+          const res = await fetch('/api/upload_pdf', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          hideTypingIndicator();
+
+          if (data.message) {
+            appendMessage('bot', `📄 **[PDF Indexed Successfully]**: Uploaded **${data.filename}** (${data.pages} pages, ${data.lines} indexed lines).\n\nYou can now ask me any specific doubt, and I will point out the exact page number and line number in **${data.filename}**!`);
+            loadInfo();
+          } else {
+            appendMessage('bot', `[Error]: ${data.error || 'Failed to upload PDF.'}`);
+          }
+        } catch (err) {
+          hideTypingIndicator();
+          appendMessage('bot', '[Error]: Network error uploading PDF.');
+        }
+      });
     }
 
     // Format simple markdown into HTML

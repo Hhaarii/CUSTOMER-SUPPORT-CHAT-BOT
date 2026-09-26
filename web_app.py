@@ -28,6 +28,8 @@ from support_bot import (
     call_grok,
     extract_urls,
     fetch_url_content,
+    index_pdf_documents,
+    DOCS_DIR,
     FREE_GROQ_MODELS,
     GROK_MODELS,
 )
@@ -98,15 +100,51 @@ def favicon():
 @app.route("/api/kb", methods=["GET"])
 def get_kb_info():
     engine = get_active_engine()
+    pdfs = index_pdf_documents()
+    pdf_summary = [{"filename": p["filename"], "pages": p["total_pages"], "lines": p["total_lines"]} for p in pdfs]
     return jsonify({
         "company": KB.get("company", {}),
         "products": KB.get("products", []),
+        "pdfs": pdf_summary,
         "engine": {
             "provider": engine["provider"],
             "model": engine["model"],
             "status": engine["status"],
             "available_groq_models": FREE_GROQ_MODELS,
         }
+    })
+
+
+@app.route("/api/upload_pdf", methods=["POST"])
+def upload_pdf():
+    if "pdf_file" not in request.files:
+        return jsonify({"error": "No PDF file provided"}), 400
+
+    file = request.files["pdf_file"]
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    if not file.filename.lower().endswith(".pdf"):
+        return jsonify({"error": "Only PDF files are supported"}), 400
+
+    if not DOCS_DIR.exists():
+        DOCS_DIR.mkdir(parents=True, exist_ok=True)
+
+    save_path = DOCS_DIR / file.filename
+    file.save(save_path)
+
+    # Re-index PDFs and update system prompt
+    global SYSTEM_PROMPT
+    SYSTEM_PROMPT = build_system_prompt(KB)
+    pdfs = index_pdf_documents()
+    uploaded_info = next((p for p in pdfs if p["filename"] == file.filename), None)
+
+    return jsonify({
+        "message": f"Successfully uploaded and indexed {file.filename}!",
+        "filename": file.filename,
+        "pages": uploaded_info["total_pages"] if uploaded_info else 0,
+        "lines": uploaded_info["total_lines"] if uploaded_info else 0,
+        "pdfs": [{"filename": p["filename"], "pages": p["total_pages"], "lines": p["total_lines"]} for p in pdfs]
     })
 
 
