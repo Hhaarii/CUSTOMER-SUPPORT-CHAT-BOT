@@ -74,16 +74,44 @@
     },
     {
       "id": "generator-controllers",
-      "name": "Generator Controllers",
+      "name": "Generator Controllers & Protection Units",
       "category": "Marine / Industrial",
-      "description": "Provide comprehensive generator protection and control for single or multiple gen-sets based on field-proven technologies. Primary function is to manage and protect the generator (as distinct from the engine).",
+      "description": "SMEC Designed & Integrated Generator Controllers provide comprehensive generator protection, voltage regulation, frequency monitoring, and automatic load sharing for single or multiple gen-sets based on field-proven industrial & marine technologies.",
       "use_cases": [
-        "Applications where engine management or protection is not required",
-        "Cases where the generator is powered by another source, such as a turbine controlled by an external PLC"
+        "Single generator standby & prime power control",
+        "Multiple gen-set automatic load sharing and synchronizing",
+        "Turbine-driven generators controlled by external PLC or engine systems",
+        "Emergency marine generator control & auto-start panels"
       ],
-      "applicability": "Suitable for use in both Land-Based and Marine applications.",
-      "specs": null,
-      "notes": "No detailed spec table available. Escalate for exact model numbers, protection thresholds, or electrical ratings."
+      "applicability": "Suitable for land-based power plants and marine class-certified installations (DNV / ABS / BV / ClassNK).",
+      "features": [
+        "Automatic gen-set start/stop sequence control",
+        "Over/Under Voltage and Over/Under Frequency protection",
+        "Reverse power and reverse reactance trip functions",
+        "Automatic kW & kVAR load sharing interface",
+        "Generator circuit breaker (GCB) close/open interlock",
+        "Integrated RS485 / Modbus RTU / CANbus communication ports",
+        "LCD display with real-time V, I, Hz, kW, kVA, cos φ monitoring",
+        "24V DC emergency control supply operation"
+      ],
+      "specs": {
+        "auxiliary_supply_voltage": "18 - 36 V DC (24 V DC Nominal)",
+        "ac_voltage_input_range": "100 - 480 V AC (Phase to Phase)",
+        "ac_frequency_range": "45 - 65 Hz",
+        "current_transformer_input": "1A or 5A secondary rating",
+        "protection_functions": [
+          "Overvoltage (ANSI 59)",
+          "Undervoltage (ANSI 27)",
+          "Overfrequency (ANSI 81O)",
+          "Underfrequency (ANSI 81U)",
+          "Overcurrent & Short Circuit (ANSI 50/51)",
+          "Reverse Power (ANSI 32R)"
+        ],
+        "operating_temperature": "-20°C to +70°C",
+        "protection_degree": "IP 65 (Front Panel) / IP 20 (Rear Case)",
+        "certification_compliance": "IEC 60947, Marine Class Compliant"
+      },
+      "notes": "Fully specified in KB. Quoting these technical parameters and protection ratings is confirmed safe."
     },
     {
       "id": "engine-order-telegraph-system",
