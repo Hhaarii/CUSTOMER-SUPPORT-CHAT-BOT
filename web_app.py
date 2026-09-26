@@ -26,6 +26,8 @@ from support_bot import (
     check_ollama_alive,
     call_ollama,
     call_grok,
+    extract_urls,
+    fetch_url_content,
     FREE_GROQ_MODELS,
     GROK_MODELS,
 )
@@ -123,6 +125,19 @@ def api_chat():
     for msg in history:
         if isinstance(msg, dict) and "role" in msg and "content" in msg:
             full_messages.append({"role": msg["role"], "content": msg["content"]})
+
+    # Detect URLs in user message and scrape live content to include in AI reasoning context
+    detected_urls = extract_urls(user_message)
+    if detected_urls:
+        url_context = ""
+        for url in detected_urls[:2]:
+            scraped_data = fetch_url_content(url)
+            url_context += f"\n--- REFERENCED LINK: {url} ---\n{scraped_data}\n"
+        
+        full_messages.append({
+            "role": "system",
+            "content": f"[LIVE WEB REFERENCE]: The customer referenced web link(s) in their message. Here is the live content extracted from the link(s):\n{url_context}\nUse this live content alongside your SMEC Knowledge Base to provide precise answers and cite the link(s)."
+        })
 
     if user_message:
         full_messages.append({"role": "user", "content": user_message})
