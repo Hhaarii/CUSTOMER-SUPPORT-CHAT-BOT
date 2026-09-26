@@ -158,8 +158,10 @@ def api_chat():
     if not user_message and not history:
         return jsonify({"error": "Empty message"}), 400
 
-    # Build messages array with system prompt
-    full_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    # Dynamically build system prompt with latest KB and PDF docs from disk
+    current_kb = load_knowledge_base()
+    current_system_prompt = build_system_prompt(current_kb)
+    full_messages = [{"role": "system", "content": current_system_prompt}]
     for msg in history:
         if isinstance(msg, dict) and "role" in msg and "content" in msg:
             full_messages.append({"role": msg["role"], "content": msg["content"]})
